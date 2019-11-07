@@ -24,6 +24,9 @@ import io.seata.rm.datasource.undo.mysql.MySQLUndoUpdateExecutor;
 import io.seata.rm.datasource.undo.oracle.OracleUndoDeleteExecutor;
 import io.seata.rm.datasource.undo.oracle.OracleUndoInsertExecutor;
 import io.seata.rm.datasource.undo.oracle.OracleUndoUpdateExecutor;
+import io.seata.rm.datasource.undo.sybase.SybaseUndoDeleteExecutor;
+import io.seata.rm.datasource.undo.sybase.SybaseUndoInsertExecutor;
+import io.seata.rm.datasource.undo.sybase.SybaseUndoUpdateExecutor;
 
 /**
  * The type Undo executor factory.
@@ -40,10 +43,10 @@ public class UndoExecutorFactory {
      * @return the undo executor
      */
     public static AbstractUndoExecutor getUndoExecutor(String dbType, SQLUndoLog sqlUndoLog) {
-        if (!dbType.equalsIgnoreCase(JdbcConstants.MYSQL)&&!dbType.equalsIgnoreCase(JdbcConstants.ORACLE)) {
+        if (!dbType.equalsIgnoreCase(JdbcConstants.MYSQL)&&!dbType.equalsIgnoreCase(JdbcConstants.ORACLE)&&!dbType.equalsIgnoreCase(JdbcConstants.SYBASE)) {
             throw new NotSupportYetException(dbType);
         }
-          if(dbType.equalsIgnoreCase(JdbcConstants.ORACLE)) {
+        if(dbType.equalsIgnoreCase(JdbcConstants.ORACLE)) {
             switch (sqlUndoLog.getSqlType()) {
                 case INSERT:
                     return new OracleUndoInsertExecutor(sqlUndoLog);
@@ -54,7 +57,7 @@ public class UndoExecutorFactory {
                 default:
                     throw new ShouldNeverHappenException();
             }
-        } else {
+        } else if(dbType.equalsIgnoreCase(JdbcConstants.MYSQL)) {
               switch (sqlUndoLog.getSqlType()) {
                   case INSERT:
                       return new MySQLUndoInsertExecutor(sqlUndoLog);
@@ -65,6 +68,17 @@ public class UndoExecutorFactory {
                   default:
                       throw new ShouldNeverHappenException();
               }
-          }
+        } else {
+            switch (sqlUndoLog.getSqlType()) {
+                case INSERT:
+                    return new SybaseUndoInsertExecutor(sqlUndoLog);
+                case UPDATE:
+                    return new SybaseUndoUpdateExecutor(sqlUndoLog);
+                case DELETE:
+                    return new SybaseUndoDeleteExecutor(sqlUndoLog);
+                default:
+                    throw new ShouldNeverHappenException();
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@
  */
 package io.seata.rm.datasource.exec;
 
+import com.alibaba.druid.util.JdbcConstants;
 import io.seata.common.util.CollectionUtils;
 import io.seata.common.util.StringUtils;
 import io.seata.core.context.RootContext;
@@ -24,10 +25,7 @@ import io.seata.rm.datasource.StatementProxy;
 import io.seata.rm.datasource.sql.SQLRecognizer;
 import io.seata.rm.datasource.sql.SQLType;
 import io.seata.rm.datasource.sql.WhereRecognizer;
-import io.seata.rm.datasource.sql.struct.Field;
-import io.seata.rm.datasource.sql.struct.TableMeta;
-import io.seata.rm.datasource.sql.struct.TableMetaCacheFactory;
-import io.seata.rm.datasource.sql.struct.TableRecords;
+import io.seata.rm.datasource.sql.struct.*;
 import io.seata.rm.datasource.undo.SQLUndoLog;
 
 import java.sql.PreparedStatement;

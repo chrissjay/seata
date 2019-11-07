@@ -20,6 +20,7 @@ import io.seata.common.exception.NotSupportYetException;
 import io.seata.rm.datasource.DataSourceProxy;
 import io.seata.rm.datasource.sql.struct.cache.MysqlTableMetaCache;
 import io.seata.rm.datasource.sql.struct.cache.OracleTableMetaCache;
+import io.seata.rm.datasource.sql.struct.cache.SybaseTableMetaCache;
 
 /**
  * @author guoyao
@@ -38,7 +39,9 @@ public class TableMetaCacheFactory {
             return MysqlTableMetaCache.getInstance();
         } else  if (dbType.equals(JdbcConstants.ORACLE)) {
             return OracleTableMetaCache.getInstance();
-        } else {
+        } else if (dbType.equals(JdbcConstants.SYBASE)) {
+            return SybaseTableMetaCache.getInstance();
+        }else {
             throw new NotSupportYetException("not support dbType[" + dbType + "]");
         }
     }

@@ -30,6 +30,11 @@ import io.seata.rm.datasource.sql.druid.oracle.OracleDeleteRecognizer;
 import io.seata.rm.datasource.sql.druid.oracle.OracleInsertRecognizer;
 import io.seata.rm.datasource.sql.druid.oracle.OracleSelectForUpdateRecognizer;
 import io.seata.rm.datasource.sql.druid.oracle.OracleUpdateRecognizer;
+import io.seata.rm.datasource.sql.druid.sybase.SybaseDeleteRecognizer;
+import io.seata.rm.datasource.sql.druid.sybase.SybaseInsertRecognizer;
+import io.seata.rm.datasource.sql.druid.sybase.SybaseSelectForUpdateRecognizer;
+import io.seata.rm.datasource.sql.druid.sybase.SybaseUpdateRecognizer;
+
 import java.util.List;
 
 /**
@@ -75,6 +80,18 @@ public class SQLVisitorFactory {
             } else if (ast instanceof SQLSelectStatement) {
                 if (((SQLSelectStatement) ast).getSelect().getQueryBlock().isForUpdate()) {
                     recognizer = new OracleSelectForUpdateRecognizer(sql, ast);
+                }
+            }
+        }else if (JdbcConstants.SYBASE.equalsIgnoreCase(dbType)) {
+            if (ast instanceof SQLInsertStatement) {
+                recognizer = new SybaseInsertRecognizer(sql, ast);
+            } else if (ast instanceof SQLUpdateStatement) {
+                recognizer = new SybaseUpdateRecognizer(sql, ast);
+            } else if (ast instanceof SQLDeleteStatement) {
+                recognizer = new SybaseDeleteRecognizer(sql, ast);
+            } else if (ast instanceof SQLSelectStatement) {
+                if (((SQLSelectStatement) ast).getSelect().getQueryBlock().isForUpdate()) {
+                    recognizer = new SybaseSelectForUpdateRecognizer(sql, ast);
                 }
             }
         }else {
