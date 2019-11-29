@@ -284,7 +284,7 @@ public class InsertExecutor<T, S extends Statement> extends AbstractDMLBaseExecu
         }
         ColumnMeta pkMeta = pkMetaMap.values().iterator().next();
         if (!pkMeta.isAutoincrement()) {
-            throw new ShouldNeverHappenException();
+//            throw new ShouldNeverHappenException();
         }
 
         ResultSet genKeys = null;
