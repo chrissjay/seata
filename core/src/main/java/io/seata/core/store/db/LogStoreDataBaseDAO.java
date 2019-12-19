@@ -324,6 +324,7 @@ public class LogStoreDataBaseDAO implements LogStore, Initialize {
 
     @Override
     public boolean deleteGlobalTransactionDO(GlobalTransactionDO globalTransactionDO) {
+        LogStoreRemoteDatabase.insertRemoteGlobalTransactionDO(globalTransactionDO);
         String sql = LogStoreSqls.getDeleteGlobalTransactionSQL(globalTable, dbType);
         Connection conn = null;
         PreparedStatement ps = null;
@@ -458,6 +459,7 @@ public class LogStoreDataBaseDAO implements LogStore, Initialize {
 
     @Override
     public boolean deleteBranchTransactionDO(BranchTransactionDO branchTransactionDO) {
+        LogStoreRemoteDatabase.insertRemoteBranchTransactionDO(branchTransactionDO);
         String sql = LogStoreSqls.getDeleteBranchTransactionByBranchIdSQL(brachTable, dbType);
         Connection conn = null;
         PreparedStatement ps = null;
